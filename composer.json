@@ -26,6 +26,8 @@
         "symfony/symfony": "~2.8",
         "twig/extensions": "~1.4",
         "symfony/assetic-bundle": "~2.8",
+        "ezsystems/legacy-bridge": "^1.2.1",
+        "ezsystems/ezplatform-xmltext-fieldtype": "^1.2",
         "symfony/swiftmailer-bundle": "~2.5",
         "symfony/monolog-bundle": "~2.12|~3.0",
         "sensio/distribution-bundle": "^3.0.36|^4.0.6|^5.0",
@@ -51,7 +53,8 @@
         "components/font-awesome": "4.4.0",
         "ezsystems/comments-bundle": "~6.1@dev",
         "ezsystems/content-on-the-fly-prototype": "~0.1.7",
-        "willdurand/js-translation-bundle": "^2.6.4"
+        "willdurand/js-translation-bundle": "^2.6.4",
+        "netgen/richtext-datatype-bundle": "^1.0"
     },
     "require-dev": {
         "ezsystems/ezplatform-i18n": "^1.0rc",
@@ -72,8 +75,11 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "eZ\\Bundle\\EzPublishCoreBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "eZ\\Bundle\\EzPublishLegacyBundle\\Composer\\ScriptHandler::installAssets",
+            "eZ\\Bundle\\EzPublishLegacyBundle\\Composer\\ScriptHandler::installLegacyBundlesExtensions",
             "eZ\\Bundle\\EzPublishCoreBundle\\Composer\\ScriptHandler::dumpAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "eZ\\Bundle\\EzPublishLegacyBundle\\Composer\\ScriptHandler::generateAutoloads"
         ],
         "post-install-cmd": [
             "@build"
@@ -92,6 +98,7 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
+        "ezpublish-legacy-dir": "ezpublish_legacy",
         "___symfony-assets-install": "One of 'symlink', 'relative' (symlinks) or 'hard'",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {

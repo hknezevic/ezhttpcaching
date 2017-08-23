@@ -52,7 +52,10 @@ class AppKernel extends Kernel
             new EzSystems\EzPlatformDesignEngineBundle\EzPlatformDesignEngineBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
-            new AppBundle\AppBundle(),
+            new eZ\Bundle\EzPublishLegacyBundle\EzPublishLegacyBundle($this),
+            new EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle(),
+            new Netgen\Bundle\RichTextDataTypeBundle\NetgenRichTextDataTypeBundle(),
+	    new AppBundle\AppBundle(),
         );
 
         switch ($this->getEnvironment()) {
