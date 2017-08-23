@@ -1,0 +1,69 @@
+sudo: required
+dist: trusty
+language: generic
+
+services:
+  - docker
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+env:
+  global:
+    - COMPOSE_FILE="doc/docker-compose/base-dev.yml:doc/docker-compose/selenium.yml"
+    - INSTALL_EZ_INSTALL_TYPE=demo
+    - SYMFONY_ENV=behat
+    - SYMFONY_DEBUG=1
+  # list of behat arguments to test
+  matrix:
+    # Disabled until failures on BDD tests with redis is solved / figured out
+    # - TEST_CMD="bin/behat -vv --profile=rest --suite=fullJson --tags=~@broken" COMPOSE_FILE="doc/docker-compose/base-prod.yml:doc/docker-compose/redis.yml:doc/docker-compose/selenium.yml" REMOTE_IMAGE="ezsystems/ezplatform-demo" APP_PROD_IMAGE="ezplatform-demo"
+    - TEST_CMD="bin/behat -vv --profile=rest --suite=fullJson --tags=~@broken" COMPOSE_FILE="doc/docker-compose/base-prod.yml:doc/docker-compose/selenium.yml" REMOTE_IMAGE="ezsystems/ezplatform-demo" APP_PROD_IMAGE="ezplatform-demo"
+    - TEST_CMD="bin/behat -vv --profile=rest --suite=fullXml --tags=~@broken"
+    - TEST_CMD="bin/behat -vv --profile=core --tags=~@broken"
+    - TEST_CMD="bin/phpunit -v vendor/ezsystems/ezpublish-kernel/eZ/Bundle/EzPublishRestBundle/Tests/Functional" INSTALL_EZ_INSTALL_TYPE=clean
+    - TEST_CMD="bin/behat -vv --profile=platformui --tags='@common'" INSTALL_EZ_INSTALL_TYPE=clean
+
+# test only master (+ Pull requests)
+branches:
+  only:
+    - master
+    # Stable branches
+    - /^\d.\d+$/
+    # Stable tags (for after_success deployment)
+    - /^v\d.\d+.\d+(\+demo\.v\d+)?$/
+
+# Update Docker and Docker Compose
+before_install: ./bin/.travis/trusty/update_docker.sh
+
+before_script:
+  # Internal auth token dedicated to testing with travis+composer on ezsystems repos, not for reuse!
+  - echo "{\"github-oauth\":{\"github.com\":\"d0285ed5c8644f30547572ead2ed897431c1fc09\"}}" > auth.json
+  # In case of dev mode we'll need to install composer packages first
+  - docker-compose -f doc/docker-compose/install.yml up --abort-on-container-exit
+  # Run (start containers and execute install command)
+  - docker-compose up -d
+  #- docker ps
+  #- docker-compose logs
+
+# Execute test command, need to use sh to get right exit code (docker/compose/issues/3379)
+# Behat will use behat.yml which is a copy of behat.yml.dist with hostnames update by doc/docker-compose/selenium.yml
+script: docker-compose exec --user www-data app sh -c "php /scripts/wait_for_db.php; php $TEST_CMD"
+
+# Push prod image to docker hub on sucess (on tags)
+after_success: if [ "$REMOTE_IMAGE" != "" ] && [ "$TRAVIS_TAG" != "" ]; then bin/.ci/docker_hub_push.sh ${APP_PROD_IMAGE} ${REMOTE_IMAGE}; fi
+
+after_failure:
+  # Will show us the full log of container's main processes (not counting shell process above running php and behat)
+  - docker-compose logs -t --tail="all"
+  # Will show us what is up, and how long it's been up
+  - docker ps -s
+
+# disable mail notifications
+notifications:
+  email: false
+
+# reduce depth (history) of git checkout
+git:
+  depth: 30

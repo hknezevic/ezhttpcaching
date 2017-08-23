@@ -1,0 +1,20 @@
+version: '2.1'
+# Solr config, to be appended after base-prod or base-dev, ..., but before selenium.yml
+#
+# NOTE: You'll need to manually reindex the solr index when booting this as we don't have entrypoint for solr yet.
+#       (Unless you use ezplatform:install command which indexes for you)
+
+services:
+  app:
+    depends_on:
+     - solr
+    environment:
+     - SEARCH_ENGINE=solr
+     - SOLR_DSN=http://solr:8983/solr
+
+  solr:
+    build:
+      context: ../../
+      dockerfile: doc/docker-compose/Dockerfile-solr
+    ports:
+     - "8983:8983"

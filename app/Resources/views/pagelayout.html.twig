@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        {% if content is defined and title is not defined %}
+            {% set title = ez_content_name(content) %}
+        {% endif %}
+
+        {% block page_head %}
+            <title>{{ title|default('Home')|trans }} - eZ Platform Demo</title>
+        {% endblock %}
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="Shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon" />
+
+        {% include 'layout/styles.html.twig' %}
+    </head>
+    <body>
+        {% block header %}
+            {{ render_esi(controller('app.controller.menu:getChildNodesAction', {
+                template: 'layout/header.html.twig'
+            })) }}
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+
+        {% block footer %}
+            {% include 'layout/footer.html.twig' %}
+        {% endblock %}
+        {% include 'layout/scripts.html.twig' %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
