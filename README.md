@@ -36,6 +36,9 @@ php app/console assetic:dump --env=prod web
 
 ### 6. add ezhttpcaching.websc entry in your /etc/hosts file
 
-### 7. ... and to clear all caches and warm up the caches for prod environment, run composer install one more time.
+### 7. ... and to clear all caches and warm up the caches for prod environment, run:
+```bash
+SYMFONY_ENV=prod composer install
+```
 
 
