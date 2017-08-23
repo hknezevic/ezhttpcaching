@@ -32,11 +32,12 @@ php app/console assetic:dump --env=prod web
 ``` 
 (Restart/reload Apache service after running the script)
 
-### 5. copy the prepared VCL file (doc/websc/varnish.vcl) to /etc/varnish folder (root permissions required ), configure Varnish to use this VCL, and restart Varnish service
+*If you are working on your local machine, don't forget to add domain to your /etc/hosts file*
+### 5. Configure Varnish
 
-### 6. add ezhttpcaching.websc entry in your /etc/hosts file
+Copy the prepared VCL file (doc/websc/varnish.vcl) to /etc/varnish folder (root permissions required ), configure Varnish to use this VCL, and restart Varnish service
 
-### 7. ... and to clear all caches and warm up the caches for prod environment, run:
+### 6. Clear all caches and warm up the caches for prod environment:
 ```bash
 SYMFONY_ENV=prod composer install
 ```
