@@ -42,3 +42,6 @@ _multiFileUpload:
     resource: "@EzSystemsMultiFileUploadBundle/Resources/config/routing.yml"
     prefix:   "%ezpublish_rest.path_prefix%"
 
+_ezpublishLegacyRoutes:
+    resource: "@EzPublishLegacyBundle/Resources/config/routing.yml"
+
