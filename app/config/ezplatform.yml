@@ -7,6 +7,10 @@ ezpublish:
     http_cache:
         purge_type: %purge_type%
 
+    router:
+        default_router:
+            non_siteaccess_aware_routes: ['websc']
+
     # Repositories configuration, setup default repository to support solr if enabled
     repositories:
         default:
