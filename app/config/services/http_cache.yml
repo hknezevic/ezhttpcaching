@@ -1,0 +1,6 @@
+services:
+    websc.view.custom_cache_headers_response_listener:
+        class: AppBundle\EventListener\CustomCacheHeadersResponseListener
+        arguments:
+            - $content.view_cache$
+            - '@ezpublish.api.service.content_type'
