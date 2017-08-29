@@ -45,3 +45,9 @@ _multiFileUpload:
 _ezpublishLegacyRoutes:
     resource: "@EzPublishLegacyBundle/Resources/config/routing.yml"
 
+websc.http_cache.clear_for_content_type:
+    path: /websc/httpcache/contenttype
+    defaults:
+        _controller: AppBundle:Cache:clearCacheForContentTypeId
+    methods: [POST]
+

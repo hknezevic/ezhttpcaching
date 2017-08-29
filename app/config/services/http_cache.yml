@@ -6,3 +6,8 @@ services:
             - '@ezpublish.api.service.content_type'
         tags:
             - { name: kernel.event_subscriber }
+
+    websc.http_cache.http_cache_clear:
+            class: AppBundle\HttpCache\HttpCacheClearService
+            arguments:
+                - "@fos_http_cache.cache_manager"
