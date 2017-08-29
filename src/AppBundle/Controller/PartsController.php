@@ -50,9 +50,15 @@ class PartsController extends Controller
             $blogPostLocationIds[] = $location->id;
         }
 
+        $response = new Response();
+        $response->setPublic();
+        $response->setSharedMaxAge(3600);
+        $response->headers->set('X-Location-Id', $blogLocationId);
+
         return $this->render(
             'AppBundle:parts:latest_blog_posts.html.twig',
-            ['blog_posts' => $blogPosts]
+            ['blog_posts' => $blogPosts],
+            $response
         );
     }
 }
