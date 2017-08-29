@@ -36,6 +36,19 @@ class CustomCacheHeadersResponseListener implements EventSubscriberInterface
 
     public function addContentTypeHeaders(FilterResponseEvent $event)
     {
-        return;
+        if (!($view = $event->getRequest()->attributes->get('view')) instanceof CachableView) {
+            return;
+        }
+
+        if (!$this->enableViewCache || !$view->isCacheEnabled()) {
+            return;
+        }
+
+        $response = $event->getResponse();
+
+        if ($view instanceof LocationValueView && ($location = $view->getLocation()) instanceof Location) {
+            $response->headers->set('X-ContentType-Id', $location->contentInfo->contentTypeId, false);
+            $response->headers->set('X-ContentType-Identifier', $this->contentTypeService->loadContentType($location->contentInfo->contentTypeId)->identifier);
+        }
     }
 }

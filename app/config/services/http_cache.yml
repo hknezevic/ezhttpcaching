@@ -4,3 +4,5 @@ services:
         arguments:
             - $content.view_cache$
             - '@ezpublish.api.service.content_type'
+        tags:
+            - { name: kernel.event_subscriber }
