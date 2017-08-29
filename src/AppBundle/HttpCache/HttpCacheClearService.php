@@ -27,6 +27,12 @@ class HttpCacheClearService
         if (empty($contentTypeId)) {
             return;
         }
+
+        $this->cacheManager->invalidate(
+            array(
+                'X-ContentType-Id' => '^' . $contentTypeId . '$',
+            )
+        );
     }
 
     /**
@@ -36,6 +42,12 @@ class HttpCacheClearService
      */
     public function commit()
     {
+        try {
+            $this->cacheManager->flush();
+        } catch (ExceptionCollection $e) {
+            return false;
+        }
+
         return true;
     }
 }
