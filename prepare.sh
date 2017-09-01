@@ -6,3 +6,4 @@ cp ezpublish_legacy_default/settings/override/site.ini.append.php ezpublish_lega
 sudo mv /etc/varnish/default.vcl /etc/varnish/default.vcl.backup
 sudo cp doc/websc/varnish.vcl /etc/varnish/default.vcl
 sudo service varnish restart
+composer install
