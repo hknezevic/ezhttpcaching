@@ -1,3 +1,4 @@
+#! /bin/bash
 cd /var/www/html/summercamp/ezhttpcaching
 cp ezpublish_legacy_default/config.php ezpublish_legacy/.
 cp -R ezpublish_legacy_default/settings/siteaccess/admin ezpublish_legacy/settings/siteaccess/.
